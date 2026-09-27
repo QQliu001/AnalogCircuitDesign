@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>SpiceWaveform 0.1 · ngspice 波形查看器</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="plotly.min.js"></script>
+  <script defer src="raw.js"></script>
+  <script defer src="demo-data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M3 20h6l4-9 6 17 5-12 3 4h6"/></svg></span>
+        <div><strong>SpiceWaveform</strong><small>ngspice viewer · v0.1</small></div>
+      </div>
+      <div class="topbar-actions">
+        <span class="privacy"><span class="privacy-dot"></span>本地读取 · 不上传文件</span>
+        <button class="button button-primary" id="importTop" type="button"><span aria-hidden="true">＋</span> 导入 RAW</button>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="section-heading"><span>数据集</span><span class="count" id="datasetCount">0</span></div>
+        <div class="dataset-list" id="datasetList"></div>
+        <button class="button button-quiet sidebar-import" id="importSide" type="button">＋ 添加波形文件</button>
+      </div>
+
+      <div class="sidebar-section signals-section">
+        <div class="section-heading"><span>信号</span><button id="clearSignals" class="text-button" type="button">清空选择</button></div>
+        <label class="search-field"><span aria-hidden="true">⌕</span><input id="signalSearch" type="search" placeholder="搜索节点或电流" autocomplete="off" aria-label="搜索信号"></label>
+        <div class="signal-list" id="signalList"></div>
+      </div>
+      <div class="sidebar-footer"><span class="footer-icon">⌁</span><span>支持 ngspice 二进制 RAW<br>Plotly.js 4.1.1 · MIT</span></div>
+    </aside>
+
+    <main class="main">
+      <section class="main-heading">
+        <div><div class="eyebrow" id="analysisLabel">波形工作台</div><h1 id="viewTitle">电路波形，一目了然。</h1><p id="viewSubtitle">导入 ngspice 的 .raw 文件，查看 DC、AC 与瞬态结果。</p></div>
+        <div class="heading-actions"><button class="button button-light" id="resetView" type="button" disabled>重置视图</button><button class="button button-light" id="exportPng" type="button" disabled>导出 PNG ↗</button></div>
+      </section>
+
+      <section class="workspace">
+        <div class="workspace-toolbar"><div class="toolbar-left"><span class="live-dot"></span><strong id="plotTitle">波形图</strong><span class="toolbar-divider"></span><span id="seriesCount">尚无曲线</span></div><div class="toolbar-right"><label for="acMode" id="acModeLabel" hidden>AC 显示</label><select id="acMode" hidden><option value="db">增益 · dB</option><option value="magnitude">幅值 · V</option><option value="phase">相位 · °</option><option value="real">实部</option><option value="imag">虚部</option></select></div></div>
+        <div class="plot-wrap"><div id="plot" aria-label="波形图"></div><div class="empty-state" id="emptyState"><div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 84 84"><rect x="7" y="7" width="70" height="70" rx="18"/><path d="M15 46h13l8-18 12 30 8-18 7 6h6"/></svg></div><h2>开始查看你的电路波形</h2><p>将 .raw 文件拖入这里，或选择本机文件。<br>可一次导入 DC、AC 和瞬态结果。</p><div class="empty-actions"><button class="button button-primary" id="importEmpty" type="button">选择 RAW 文件</button><button class="button button-light" id="loadDemo" type="button">打开内置示例</button></div></div></div>
+        <div class="plot-footer"><span>滚轮缩放 · 拖动框选 · 双击重置</span><span id="fileDetail">等待导入文件</span></div>
+      </section>
+
+      <section class="stats" aria-label="波形数据摘要"><div class="stat"><span>分析类型</span><strong id="statAnalysis">—</strong></div><div class="stat"><span>数据点</span><strong id="statPoints">—</strong></div><div class="stat"><span>横轴范围</span><strong id="statRange">—</strong></div><div class="stat"><span>已选信号</span><strong id="statSignals">—</strong></div></section>
+    </main>
+  </div>
+  <input id="fileInput" type="file" accept=".raw,.RAW" multiple hidden>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
