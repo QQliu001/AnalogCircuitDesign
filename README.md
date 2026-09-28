@@ -1,4 +1,4 @@
-# AnalogCircuitDesign
+# AnalogDesign
 
 Analog circuit design projects and tools.
 
